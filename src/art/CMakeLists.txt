@@ -49,6 +49,7 @@ if(Appleseed_FOUND)
     opt.c
     do.c
     ext.h
+    usage.cpp
     )
 
   BRLCAD_ADDEXEC(art "${ART_SRCS}" "${RT_STD_LIBS};${Appleseed_LIBRARIES};${Appleseed_BOOST_SYSTEM_LIB};${Appleseed_OPENIMAGEIO_LIB}" TEST_USESDATA)
