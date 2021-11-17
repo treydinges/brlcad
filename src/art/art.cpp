@@ -146,6 +146,7 @@
 #include "ged.h"
 #include "ged/commands.h"
 #include "ged/defines.h"
+#include "./ext.h"
 
 struct application APP;
 struct resource* resources;
@@ -160,13 +161,47 @@ extern "C" {
     struct icv_image* bif = NULL;
 }
 
+// struct bu_structparse view_parse[] = {
+    // {"%d", 1, "detect_regions", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "dr", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "detect_distance", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "dd", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "detect_normals", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "dn", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "detect_ids", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "di", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%f", 3, "foreground", 0, color_hook, NULL, NULL},
+    // {"%f", 3, "fg", 0, color_hook, NULL, NULL},
+    // {"%f", 3, "background", 0, color_hook, NULL, NULL},
+    // {"%f", 3, "bg", 0, color_hook, NULL, NULL},
+    // {"%d", 1, "overlay", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "ov", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "blend", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "bl", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "region_color", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "rc", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%V", 1, "occlusion_objects", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%V", 1, "oo", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "occlusion_mode", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "om", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%f", 1, "max_dist", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%f", 1, "md", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "antialias", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "aa", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "both_sides", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+    // {"%d", 1, "bs", 0, BU_STRUCTPARSE_FUNC_NULL, NULL, NULL},
+//     {"",	0, (char *)0,	0,	BU_STRUCTPARSE_FUNC_NULL, NULL, NULL }
+// };
+
 /* NOTE: stub in empty rt_do_tab to satisfy ../rt/opt.c - this means
  * we can't run the commands, but they are tied deeply into the various
  * src/rt files and a significant refactor is in order to properly
  * extract that functionality into a library... */
 
 extern "C" {
-    struct command_tab rt_do_tab[] = { {NULL, NULL, NULL, 0, 0, 0} };
+    struct command_tab rt_do_tab[] = {
+      {NULL, NULL, NULL, 0, 0, 0}
+    };
     void usage(const char* argv0, int verbose);
     int get_args(int argc, const char* argv[]);
 
@@ -676,6 +711,8 @@ main(int argc, char **argv)
 	return 1;
     }
 
+    usage(argv[0], 0);
+
     title_file = argv[bu_optind];
     //title_obj = argv[bu_optind + 1];
     if (!objv) {
@@ -741,6 +778,11 @@ main(int argc, char **argv)
 
     do_ae(azimuth, elevation);
     RENDERER_LOG_INFO("View model: (%f, %f, %f)", eye_model[0], -eye_model[2], eye_model[1]);
+
+    /* get command options
+    right now we only support -c "sample size=x" to set amount of samples
+    when rendering */
+    // option("", "-c \"command\"", "Customize behavior (only option \"sample size\" for now)", 1);
 
     // Build the project.
     asf::auto_release_ptr<asr::Project> project(build_project(title_file, bu_vls_cstr(&str)));
