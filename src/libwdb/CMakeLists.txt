@@ -20,7 +20,6 @@ set(LIBWDB_SOURCES
   brep.cpp
   cline.c
   constraint.c
-  material.c
   datum.c
   dsp.c
   dynamic_geometry.c

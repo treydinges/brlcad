@@ -41,7 +41,6 @@ set(LIBRT_SOURCES
   comb/comb_mirror.c
   comb/db_comb.c
   constraint.c
-  material.c
   cut.c
   cut_hlbvh.c
   db5_alloc.c
